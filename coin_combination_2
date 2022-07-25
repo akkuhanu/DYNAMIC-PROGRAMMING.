@@ -1,0 +1,175 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define pb push_back
+#define fr(a,b) for(ll i = a; i < b; i++)
+#define rep(i,a,b) for(ll i = a; i < b; i++)
+#define mod 1000000007
+#define inf (1LL<<60)
+#define nline cout<<'\n'
+#define all(x) (x).begin(), (x).end()
+#define prDouble(x) cout << fixed << setprecision(10) << x
+#define triplet pair<ll,pair<ll,ll>>
+#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL)
+using namespace std;
+
+
+// COIN COMBINATION-2 ---> CSES PROBLEMSET.
+
+// HERE THE TWIST IS THAT WE GET
+
+// we have to consider only distinct ways. i.e 2 + 2 + 5 and 5 + 2 + 2 is same.
+
+// also the coins which used to form the ive sum is  give
+// as an input unlike we preknown that it 1 to 6 in dice combination problem.
+
+
+// RECCURENCE RELATION : dp[i][sum] = dp[i-1][sum] + dp[i][sum-arr[i]];
+// T.C : O(N1*N)
+
+//TOP DOWN APPROCH.
+int sumi(ll i,ll sum,ll arr[],vector<vector<ll>>& dp){
+    if(dp[i][sum]!=-1){
+        return dp[i][sum];
+    }
+    if(i<0){
+        return 0;
+    }
+    else{
+        int a = 0 ;
+        if(sum-arr[i]>=0){
+           a = sumi(i,sum-arr[i],arr,dp);
+        }
+        int b = 0;
+        if(i>0){
+           b = sumi(i-1,sum,arr,dp);
+        }
+        return dp[i][sum] = a + b;
+    }
+}
+
+int main() {
+
+    fast_io;
+    #ifndef ONLINE_JUDGE
+    freopen("inputf.in","r",stdin);
+    freopen("outputf.in","w",stdout);
+    #endif
+
+
+    ll t;
+    cin>>t;
+
+    while(t--){
+
+        ll n1;
+        cin>>n1;
+
+        ll n;
+        cin>>n;
+
+        ll arr[n1+1];
+
+        fr(1,n1+1){
+
+            cin>>arr[i];
+
+        }
+
+        //TOP-DOWN APPROACH
+
+        vector<vector<ll>> dp(n1+1,vector<ll>(n+1,-1));
+        fr(1,n1+1){
+
+            dp[i][0] = 1;
+
+        }
+
+        sumi(n1,n,arr,dp);
+        cout<<dp[n1][n];
+        nline;
+
+        
+
+        //BOTTOM-UP APPROACH (basically use recurrence relations for this.)
+
+        //dp[i][sum] = dp[i-1][sum] + dp[i][sum-arr[i]];
+
+
+        vector<vector<ll>> dp1(n1+1,vector<ll>(n+1,0));
+
+        fr(1,n1+1){
+
+            dp1[i][0] = 1;
+
+        }
+
+        rep(i,1,n1+1){
+
+            rep(sum,1,n+1){
+
+                if(sum==0){
+                    dp1[i][sum] = 0;
+                }
+
+                else{
+                    int a = 0; 
+                    if((sum)>=arr[i]){
+
+                        a = dp1[i][sum-arr[i]];
+                    }
+                    int b = 0;
+                    if(i>1){
+                        b = dp1[i-1][sum];
+                    }
+                    dp1[i][sum] = a + b;
+                }
+
+            }
+        }
+
+        cout<<dp1[n1][n];
+        nline;
+
+
+        // (1-D array optimized approach)
+
+
+        vector<int> prev1 (n+1); // i-1 (sum)wali ;
+        prev1[0] = 1 ;
+
+        rep(i,1,n1+1){
+
+            vector<int> cur1 (n+1); // i (sum) wali
+            cur1[0] = 1;
+
+            rep(sum,1,n+1){
+
+                if(sum==0){
+                    cur1[sum] = 0;
+                }
+                
+
+                else{
+                    int a = 0; 
+                    if((sum)>=arr[i]){
+
+                        a = cur1[sum-arr[i]];
+
+                    }
+                    int b = 0;
+                    if(i>1){
+                        b = prev1[sum];
+                    }
+                    cur1[sum] = a + b;
+                }
+
+            }
+            prev1 = cur1;
+
+        }
+
+        cout<<prev1[n];
+        nline;
+    }    
+
+}
