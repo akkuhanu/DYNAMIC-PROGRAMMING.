@@ -145,6 +145,26 @@ void binary_lifting(ll src ,ll par,vector<vec>& up,vector<vec>& tree){
     return ;
 
 }
+ll ans_query(ll node,ll jump_required){
+
+    if(node==-1 || jump_required==0){
+
+        return node;
+
+    }
+
+    for(ll i=19;i>=0;i--){
+
+        if(jump_required>=(1<<i)){
+
+            return ans_query(up[node][i],jump_required-(1<<i));
+
+        }
+
+    }
+
+
+}
 int main(){
 
     fast_io;
