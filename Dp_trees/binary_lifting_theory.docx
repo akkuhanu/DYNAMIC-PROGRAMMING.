@@ -1,0 +1,44 @@
+
+    // Binary Lifting of trees.  (Also help to find LCA)
+
+    // (In this we are given a node n and jump - k , 
+    //so now we have to move k levels up from the give node.)
+
+
+
+    // Brute Force ---> T.C --> O(N.Q) (Q->no. of  queries)
+    // (node,k) --> (par[node],k-1) ---> (par[par[node]],k-2)
+
+
+
+    // For optimized store information Like
+
+    // For every node u evauluate : up(u,2^i) 
+
+    // since evry number can be expressed as binary , so we use 
+    // kind of binary exponentiation here.
+
+    // example --> k = 19 (010110) --> (2^4 + 2 + 1)
+
+    // Max no. of bits is log(n)/log(2) and it is also the max. jump 
+
+    // up(n,2^4) --> p then up(p,2^1) --> q , up(q,2^0) --> ans
+
+    // so we now store information up(n,2^i) as up(n,i)
+
+
+
+    // Base Case :
+    //  up[root][x] = -1  , 2^x above node
+    //  up[u][0] = par(u)
+    //  up[u][1] = up[ up[u][1 - 1] ][1 -1]
+
+
+    // up[u][x] --> up[ up[u][x-1] ][x-1]
+
+
+    // T.C ---> O(N*Log(N)) -- > to  build the tables.
+
+
+
+
